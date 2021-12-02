@@ -31,10 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
@@ -43,7 +43,7 @@ import static com.ninjasolutions.pusher.PusherPlugin.TAG;
 /**
  * PusherPlugin
  */
-public class PusherPlugin implements MethodCallHandler {
+public class PusherPlugin implements FlutterPlugin {
     private static Pusher pusher;
     private static Map<String, Channel> channels = new HashMap<>();
     private static EventChannelListener eventListener;
@@ -60,7 +60,17 @@ public class PusherPlugin implements MethodCallHandler {
     public static void registerWith(Registrar registrar) {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "plugins.indoor.solutions/pusher");
         final EventChannel eventStream = new EventChannel(registrar.messenger(), "plugins.indoor.solutions/pusherStream");
+        PusherPlugin.migratedPluginRegistration(channel, eventStream);
+    }
 
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        final MethodChannel channel = new MethodChannel(binding.binaryMessenger, "plugins.indoor.solutions/pusher");
+        final EventChannel eventStream = new EventChannel(binding.binaryMessenger, "plugins.indoor.solutions/pusherStream");
+        PusherPlugin.migratedPluginRegistration(channel, eventStream);
+    }
+
+    public static void migratedPluginRegistration(MethodChannel channel,  EventChannel eventStream) {
         eventListener = new EventChannelListener();
         eventListenerPrivate = new PrivateChannelChannelListener();
         eventListenerPresence = new PresenceChannelChannelListener();
