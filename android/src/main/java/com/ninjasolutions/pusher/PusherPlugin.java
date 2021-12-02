@@ -411,6 +411,11 @@ public class PusherPlugin implements FlutterPlugin, MethodCallHandler {
             }
         }
     }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        // TODO implement
+    }
 }
 
 
