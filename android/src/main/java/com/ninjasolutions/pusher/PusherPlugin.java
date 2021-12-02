@@ -46,7 +46,7 @@ import static com.ninjasolutions.pusher.PusherPlugin.TAG;
 /**
  * PusherPlugin
  */
-public class DummyPlugin implements FlutterPlugin, MethodCallHandler {
+public class PusherPlugin implements FlutterPlugin, MethodCallHandler {
     private static Pusher pusher;
     private static Map<String, Channel> channels = new HashMap<>();
     private static EventChannelListener eventListener;
